@@ -1,0 +1,6 @@
+---
+# TFSec configuration
+exclude:
+  - AWS002  # Example: ignore S3 logging rule if central bucket is managed elsewhere
+severity_overrides:
+  AWS089: CRITICAL  # Ensure VPC flow logging is enabled

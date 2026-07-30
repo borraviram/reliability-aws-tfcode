@@ -1,0 +1,37 @@
+# Sentinel policy: Require encryption at rest for storage resources.
+
+import "tfplan/v2" as tfplan
+
+param resource_types default [
+  "aws_s3_bucket_server_side_encryption_configuration",
+  "aws_db_instance",
+  "aws_rds_cluster",
+  "aws_ebs_volume",
+]
+
+violations = 0
+
+for resource_types as rt {
+  resources = filter tfplan.resource_changes as _, rc {
+    rc.type is rt and
+    rc.change.actions contains "create"
+  }
+
+  for resources as _, r {
+    if rt is "aws_s3_bucket_server_side_encryption_configuration" {
+      if r.change.after.rule[0].apply_server_side_encryption_by_default[0].sse_algorithm is empty {
+        print("S3 bucket encryption not configured:", r.address)
+        violations += 1
+      }
+    } else {
+      if r.change.after.encrypted is not true {
+        print("Encryption not enabled for resource:", r.address)
+        violations += 1
+      }
+    }
+  }
+}
+
+main = rule {
+  violations is 0
+}

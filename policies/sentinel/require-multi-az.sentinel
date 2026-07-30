@@ -1,0 +1,23 @@
+# Sentinel policy: Require Multi-AZ for production databases.
+
+import "tfplan/v2" as tfplan
+
+allowed_environments = ["prod", "production"]
+
+resources = filter tfplan.resource_changes as _, rc {
+  rc.type in ["aws_db_instance", "aws_rds_cluster"] and
+  rc.change.actions contains "create"
+}
+
+violations = 0
+
+for resources as _, r {
+  if r.change.after.multi_az is not true {
+    print("Multi-AZ not enabled for resource:", r.address)
+    violations += 1
+  }
+}
+
+main = rule {
+  violations is 0
+}
