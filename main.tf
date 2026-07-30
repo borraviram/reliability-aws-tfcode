@@ -1,4 +1,4 @@
-# Root composition for reliability-architecture.
+# Root composition for mcp-ai-architecture.
 
 module "vpc" {
   source = "./modules/vpc"

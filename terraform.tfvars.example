@@ -1,5 +1,5 @@
 aws_region         = "us-east-1"
-project_name       = "reliability-architecture"
+project_name       = "mcp-ai-architecture"
 environment        = "dev"
 owner              = "platform-team"
 cost_center        = "cc-12345"

@@ -5,7 +5,7 @@
 set -euo pipefail
 
 ENVIRONMENT="${1:-dev}"
-PROJECT="reliability-architecture"
+PROJECT="mcp-ai-architecture"
 REGION="us-east-1"
 
 BUCKET_NAME="tf-state-${PROJECT}-${ENVIRONMENT}"

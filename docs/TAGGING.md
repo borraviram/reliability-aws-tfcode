@@ -6,7 +6,7 @@ All AWS resources created by this repository must carry the following tags via t
 
 | Tag Key | Example Value | Purpose |
 |---------|---------------|---------|
-| `Project` | `reliability-architecture` | Identifies the project or application. |
+| `Project` | `mcp-ai-architecture` | Identifies the project or application. |
 | `Environment` | `prod` | Identifies the environment (dev, staging, prod). |
 | `ManagedBy` | `terraform` | Identifies the deployment tool. |
 | `Owner` | `platform-team` | Team responsible for the resource. |
