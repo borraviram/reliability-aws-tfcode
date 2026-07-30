@@ -67,12 +67,12 @@ Terraform-based infrastructure as code (IaC) repository for deploying a reliable
 
 3. Plan changes:
    ```bash
-   terraform plan -var-file=environments/dev/terraform.tfvars
+   terraform plan "-var-file=environments/dev/terraform.tfvars"
    ```
 
 4. Apply changes:
    ```bash
-   terraform apply -var-file=environments/dev/terraform.tfvars
+   terraform apply "-var-file=environments/dev/terraform.tfvars"
    ```
 
 ## Governance
