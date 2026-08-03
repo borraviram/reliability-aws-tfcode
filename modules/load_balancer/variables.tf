@@ -13,6 +13,16 @@ variable "public_subnet_ids" {
   type        = list(string)
 }
 
+variable "security_group_ids" {
+  description = "Security group IDs to attach to the ALB"
+  type        = list(string)
+}
+
+variable "instance_ids" {
+  description = "EC2 instance IDs to attach to the target group"
+  type        = list(string)
+}
+
 variable "tags" {
   description = "Common tags"
   type        = map(string)

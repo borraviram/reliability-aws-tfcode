@@ -98,14 +98,20 @@ module "compute" {
   tags = local.common_tags
 }
 
+module "load_balancer" {
+  source = "./modules/load_balancer"
+
+  name_prefix        = local.naming_prefix
+  vpc_id             = module.vpc.vpc_id
+  public_subnet_ids  = module.vpc.public_subnet_ids
+  security_group_ids = [module.security.alb_security_group_id]
+  instance_ids       = module.compute.instance_ids
+  tags               = local.common_tags
+}
+
 #
 # module "database" {
 #   source = "./modules/database"
-#   ...
-# }
-#
-# module "load_balancer" {
-#   source = "./modules/load_balancer"
 #   ...
 # }
 #

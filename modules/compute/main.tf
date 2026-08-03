@@ -7,24 +7,8 @@
 # -----------------------------------------------------------------------------
 # AMI Lookup
 # -----------------------------------------------------------------------------
-data "aws_ami" "amazon_linux_2023" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["al2023-ami-*-x86_64"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
+data "aws_ssm_parameter" "amazon_linux_2023" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
 }
 
 # -----------------------------------------------------------------------------
@@ -33,7 +17,7 @@ data "aws_ami" "amazon_linux_2023" {
 resource "aws_instance" "this" {
   count = var.instance_count
 
-  ami                         = data.aws_ami.amazon_linux_2023.id
+  ami                         = data.aws_ssm_parameter.amazon_linux_2023.value
   instance_type               = var.instance_type
   subnet_id                   = var.subnet_ids[count.index]
   vpc_security_group_ids      = var.security_group_ids
