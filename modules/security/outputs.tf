@@ -1,9 +1,9 @@
-output "kms_key_arn" {
-  description = "ARN of the KMS key"
-  value       = aws_kms_key.this.arn
+output "alb_security_group_id" {
+  description = "Security group ID for the ALB"
+  value       = aws_security_group.alb.id
 }
 
-output "instance_role_arn" {
-  description = "ARN of the EC2 instance IAM role"
-  value       = aws_iam_role.instance.arn
+output "ec2_security_group_id" {
+  description = "Security group ID for EC2 instances"
+  value       = aws_security_group.ec2.id
 }

@@ -1,9 +1,14 @@
-output "asg_name" {
-  description = "Name of the Auto Scaling Group"
-  value       = aws_autoscaling_group.this.name
+output "instance_ids" {
+  description = "List of EC2 instance IDs"
+  value       = aws_instance.this[*].id
 }
 
-output "launch_template_id" {
-  description = "ID of the launch template"
-  value       = aws_launch_template.this.id
+output "instance_private_ips" {
+  description = "List of private IP addresses of the EC2 instances"
+  value       = aws_instance.this[*].private_ip
+}
+
+output "instance_availability_zones" {
+  description = "List of availability zones where instances are deployed"
+  value       = aws_instance.this[*].availability_zone
 }
