@@ -18,11 +18,6 @@ variable "security_group_ids" {
   type        = list(string)
 }
 
-variable "instance_ids" {
-  description = "EC2 instance IDs to attach to the target group"
-  type        = list(string)
-}
-
 variable "tags" {
   description = "Common tags"
   type        = map(string)

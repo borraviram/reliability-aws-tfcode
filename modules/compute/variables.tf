@@ -18,12 +18,6 @@ variable "key_name" {
   type        = string
 }
 
-variable "instance_count" {
-  description = "Number of EC2 instances to create"
-  type        = number
-  default     = 2
-}
-
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
@@ -48,8 +42,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "target_group_arns" {
-  description = "ALB target group ARNs to attach instances"
-  type        = list(string)
-  default     = []
+variable "target_group_arn" {
+  description = "ALB target group ARN to attach the Auto Scaling Group"
+  type        = string
 }

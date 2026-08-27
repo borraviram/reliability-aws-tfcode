@@ -17,6 +17,16 @@ module "security" {
   tags        = local.common_tags
 }
 
+module "load_balancer" {
+  source = "./modules/load_balancer"
+
+  name_prefix        = local.naming_prefix
+  vpc_id             = module.vpc.vpc_id
+  public_subnet_ids  = module.vpc.public_subnet_ids
+  security_group_ids = [module.security.alb_security_group_id]
+  tags               = local.common_tags
+}
+
 module "compute" {
   source = "./modules/compute"
 
@@ -24,9 +34,9 @@ module "compute" {
   subnet_ids                  = module.vpc.private_subnet_ids
   security_group_ids          = [module.security.ec2_security_group_id]
   key_name                    = "kimi-k3"
-  instance_count              = 2
   instance_type               = "t3.micro"
   associate_public_ip_address = false
+  target_group_arn            = module.load_balancer.target_group_arn
 
   user_data = <<-EOF
               #!/bin/bash
@@ -96,17 +106,6 @@ module "compute" {
               EOF
 
   tags = local.common_tags
-}
-
-module "load_balancer" {
-  source = "./modules/load_balancer"
-
-  name_prefix        = local.naming_prefix
-  vpc_id             = module.vpc.vpc_id
-  public_subnet_ids  = module.vpc.public_subnet_ids
-  security_group_ids = [module.security.alb_security_group_id]
-  instance_ids       = module.compute.instance_ids
-  tags               = local.common_tags
 }
 
 #
