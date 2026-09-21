@@ -13,6 +13,38 @@ data "aws_ssm_parameter" "amazon_linux_2023" {
 }
 
 # -----------------------------------------------------------------------------
+# IAM Role / Instance Profile for Session Manager
+# -----------------------------------------------------------------------------
+resource "aws_iam_role" "ssm" {
+  name = "${var.name_prefix}-ec2-ssm-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-ec2-ssm-role"
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role       = aws_iam_role.ssm.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "ssm" {
+  name = "${var.name_prefix}-ec2-ssm-profile"
+  role = aws_iam_role.ssm.name
+}
+
+# -----------------------------------------------------------------------------
 # Launch Template
 # -----------------------------------------------------------------------------
 resource "aws_launch_template" "this" {
@@ -23,6 +55,10 @@ resource "aws_launch_template" "this" {
   user_data     = base64encode(var.user_data)
 
   vpc_security_group_ids = var.security_group_ids
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ssm.name
+  }
 
   metadata_options {
     http_endpoint               = "enabled"

@@ -6,7 +6,7 @@ locals {
     Project     = local.project_name
     Environment = local.environment
     ManagedBy   = "terraform"
-    Owner       = var.owner
+    owner       = var.owner
     CostCenter  = var.cost_center
   }
 

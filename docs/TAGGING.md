@@ -9,7 +9,7 @@ All AWS resources created by this repository must carry the following tags via t
 | `Project` | `mcp-ai-architecture` | Identifies the project or application. |
 | `Environment` | `prod` | Identifies the environment (dev, staging, prod). |
 | `ManagedBy` | `terraform` | Identifies the deployment tool. |
-| `Owner` | `platform-team` | Team responsible for the resource. |
+| `owner` | `platform-team` | Team responsible for the resource. |
 | `CostCenter` | `cc-12345` | Cost allocation for finance. |
 
 ## Recommended Tags
