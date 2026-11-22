@@ -1,0 +1,215 @@
+
+
+## **AWS Networking & Security Services (with Azure equivalents)**
+
+### **1. VPC (Virtual Private Cloud)**
+
+* **Concept**:
+  Logical isolation of resources within AWS. You define IP ranges, subnets, routing, and gateways to create a secure network environment.
+  Needed for segregating workloads, enforcing boundaries, and controlling network flow.
+* **Key Configuration**:
+
+  * CIDR block (e.g., `10.0.0.0/16`)
+  * Region
+  * Associated subnets, route tables, gateways
+* **Azure Equivalent**: **VNet (Virtual Network)**
+
+---
+
+### **2. VPC Peering**
+
+* **Concept**:
+  Connects two VPCs privately without traversing the internet. Traffic is routed internally.
+  Used for inter-VPC communication within or across regions.
+* **Key Configuration**:
+
+  * VPC IDs (requester & accepter)
+  * Route table updates to point to peering connection
+  * Overlapping CIDR avoidance
+* **Azure Equivalent**: **VNet Peering**
+
+---
+
+### **3. VPN Site-to-Site Connection**
+
+* **Concept**:
+  IPsec VPN tunnel between on-premises network and AWS VPC over the internet.
+  Used for secure hybrid connectivity.
+* **Key Configuration**:
+
+  * Customer Gateway (on-premises router public IP)
+  * Virtual Private Gateway or Transit Gateway attachment
+  * IPsec/IKE parameters
+* **Azure Equivalent**: **VPN Gateway (Site-to-Site)**
+
+---
+
+### **4. VPN CloudHub**
+
+* **Concept**:
+  Hub-and-spoke VPN model for securely connecting multiple sites to AWS over IPsec using the same Virtual Private Gateway.
+  Useful for multi-branch hybrid setups.
+* **Key Configuration**:
+
+  * Multiple customer gateways
+  * Same Virtual Private Gateway for all
+* **Azure Equivalent**: **Azure VPN Gateway with Multi-Site Configuration**
+
+---
+
+### **5. Direct Connect**
+
+* **Concept**:
+  Dedicated, private fiber link between AWS and on-premises data center.
+  Provides consistent bandwidth and lower latency than internet VPN.
+* **Key Configuration**:
+
+  * Location (Direct Connect facility)
+  * Virtual Interfaces (Public or Private VIF)
+  * BGP configuration
+* **Azure Equivalent**: **ExpressRoute**
+
+---
+
+### **6. Transit Gateway**
+
+* **Concept**:
+  Central hub to connect multiple VPCs, VPNs, and Direct Connect. Reduces complexity from full-mesh peering.
+  Used for large-scale network interconnect.
+* **Key Configuration**:
+
+  * Attachments (VPC, VPN, Direct Connect)
+  * Route tables (per TGW)
+* **Azure Equivalent**: **Virtual WAN (Hub)**
+
+---
+
+### **7. VPC Endpoints**
+
+* **Concept**:
+  Private connection to AWS services without going over the internet.
+  Interface endpoints (ENIs) for services like S3, DynamoDB, etc.
+  Gateway endpoints for S3/DynamoDB.
+* **Key Configuration**:
+
+  * Endpoint type (Interface/Gateway)
+  * Service name
+  * Subnet and Security Group association
+* **Azure Equivalent**: **Private Endpoint**
+
+---
+
+### **8. VPC Endpoint Services**
+
+* **Concept**:
+  Publish your own service privately in AWS for access via VPC endpoints.
+  Used for private SaaS or internal apps.
+* **Key Configuration**:
+
+  * Network Load Balancer
+  * Acceptance settings for consumer connections
+* **Azure Equivalent**: **Private Link Service**
+
+---
+
+### **9. AWS WAF (Web Application Firewall)**
+
+* **Concept**:
+  Layer 7 firewall to protect web apps from SQL injection, XSS, bot attacks.
+  Works with CloudFront, ALB, or API Gateway.
+* **Key Configuration**:
+
+  * Web ACLs
+  * Rules/Rule groups
+  * Conditions (IP sets, regex, etc.)
+* **Azure Equivalent**: **Azure WAF (Web Application Firewall)**
+
+---
+
+### **10. AWS Global Accelerator**
+
+* **Concept**:
+  Uses AWS edge locations to route user traffic over the AWS backbone to the nearest healthy endpoint. Improves latency and availability.
+* **Key Configuration**:
+
+  * Static anycast IPs
+  * Endpoint groups (per region)
+  * Traffic dials
+* **Azure Equivalent**: **Azure Front Door (Global Anycast Routing)**
+
+---
+
+### **11. Route Tables**
+
+* **Concept**:
+  Control traffic flow within a VPC by mapping destinations to targets (gateways, instances, etc.).
+* **Key Configuration**:
+
+  * Routes (destination CIDR → target)
+  * Association with subnets
+* **Azure Equivalent**: **User-Defined Routes (UDR)**
+
+---
+
+### **12. Subnets**
+
+* **Concept**:
+  Segment VPC into smaller IP ranges. Public subnets have internet access; private subnets don’t.
+* **Key Configuration**:
+
+  * CIDR block
+  * Availability Zone
+  * Route table association
+* **Azure Equivalent**: **VNet Subnets**
+
+---
+
+### **13. Network ACLs (NACLs)**
+
+* **Concept**:
+  Stateless firewall for subnet-level inbound/outbound rules.
+  Evaluated before Security Groups.
+* **Key Configuration**:
+
+  * Rule number, protocol, port range, action (allow/deny)
+  * Inbound/outbound rule sets
+* **Azure Equivalent**: **Network Security Group (NSG)** (although NSG also covers SG-like roles)
+
+---
+
+### **14. Security Groups**
+
+* **Concept**:
+  Stateful firewall at instance/network interface level. Controls inbound and outbound traffic.
+* **Key Configuration**:
+
+  * Inbound/outbound rules (protocol, port, source/destination)
+  * Attached to ENIs
+* **Azure Equivalent**: **NSG (applied to NICs)**
+
+---
+
+### **15. Internet Gateway**
+
+* **Concept**:
+  Allows communication between VPC resources and the public internet.
+  Needed for public subnet internet access.
+* **Key Configuration**:
+
+  * Attach to VPC
+  * Update route tables with `0.0.0.0/0` → IGW
+* **Azure Equivalent**: **VNet + Public IP + Default Route to Internet**
+
+---
+
+### **16. NAT Gateway**
+
+* **Concept**:
+  Enables private subnet resources to initiate outbound internet traffic while blocking inbound connections.
+* **Key Configuration**:
+
+  * Public subnet placement
+  * Elastic IP association
+  * Route table update for private subnets
+* **Azure Equivalent**: **NAT Gateway**
+

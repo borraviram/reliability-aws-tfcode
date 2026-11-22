@@ -1,0 +1,58 @@
+
+### ✅ **VPC Peering Setup (Same or Cross-Region, Same or Different Accounts)**
+
+1. **VPC Peering Overview:**
+
+   * VPC Peering enables network connectivity between **two VPCs**.
+   * It supports:
+
+     * VPCs in the **same region** or **different regions**
+     * VPCs within the **same AWS account** or **between different AWS accounts**
+
+2. **Identify the Roles:**
+
+   * Decide which VPC will act as the **requester** and which will act as the **accepter**.
+
+3. **Create a VPC Peering Connection:**
+
+   * From the **requester VPC**, initiate a peering connection.
+   * Specify the **CIDR block** of the accepter VPC.
+   * Choose whether the accepter VPC is in the **same account** or a **different account**, and specify the **region**.
+
+4. **Accept the Peering Request:**
+
+   * Go to the **accepter VPC's region/account**.
+   * Locate the pending peering request and **accept** it.
+
+5. **Update Route Tables:**
+
+   * For the peering to work, you must add routes in both VPCs' route tables.
+   * In each route table (public or private, depending on connectivity needs), add a route:
+
+     * **Destination:** CIDR block of the *other* VPC
+     * **Target:** VPC Peering Connection ID
+
+   Example:
+
+   * In VPC A's route table:
+
+     ```
+     Destination: 10.2.0.0/16
+     Target:      pcx-xxxxxxx (VPC Peering ID)
+     ```
+   * In VPC B's route table:
+
+     ```
+     Destination: 10.1.0.0/16
+     Target:      pcx-xxxxxxx
+     ```
+
+6. **Test the Connection:**
+
+   * Launch EC2 instances in both VPCs (in subnets with updated route tables and security group rules).
+   * Use **private IPs** to test connectivity using:
+
+     ```bash
+     ping <private-ip-of-peer-instance>
+     ```
+   * Ensure **security groups and NACLs** allow ICMP or required protocols (like SSH, HTTP, etc.).

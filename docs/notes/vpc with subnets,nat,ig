@@ -1,0 +1,36 @@
+
+### ✅ **VPC Setup with Public and Private Subnets (Corrected and Ordered)**
+
+1. **Create a VPC**
+
+   * Define CIDR block (e.g., `10.0.0.0/16`).
+   * Enable DNS support and hostname if needed.
+
+2. **Create Subnets**
+
+   * **Public Subnet:** e.g., `10.0.1.0/24`
+   * **Private Subnet:** e.g., `10.0.2.0/24`
+
+3. **Create an Internet Gateway (IGW)**
+
+   * Attach the Internet Gateway to the VPC.
+
+4. **Modify the Main Route Table (or Create a New One for Public Subnet)**
+
+   * Add a route:
+     `Destination: 0.0.0.0/0 → Target: Internet Gateway`
+   * Associate the **public subnet** with this route table to allow **inbound and outbound internet access** for public-facing services.
+
+5. **Create a NAT Gateway**
+
+   * Allocate an Elastic IP (EIP).
+   * Create the NAT Gateway in the **public subnet**.
+
+6. **Create a Route Table for the Private Subnet**
+
+   * Add a route:
+     `Destination: 0.0.0.0/0 → Target: NAT Gateway`
+   * Associate this route table with the **private subnet**.
+   * This allows instances in the private subnet to access the internet for **outbound traffic** such as **package updates and patches**, while remaining inaccessible from the public internet.
+
+
